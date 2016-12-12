@@ -65,3 +65,19 @@ Depois:
 ```
     no arquivo `pom.xml` do projeto
 1. Comecei a pesquisar o motivo de estar acontecendo o [Erro 1](#erro-1)
+
+#### Depois da pesquisa
+1. Rodei, na pasta do projeto, o comando
+> ###### Comando 2 `mvn assembly:assembly -DdescriptorId=jar-with-dependencies`
+1. Rodei o
+> ###### Comando 3 `sudo bin/storm jar /home/igorlemos/Desktop/storminho/target/storminho-1.0-jar-with-dependencies.jar edu.uffs.storminho.topologies.MainTopology`  
+
+    na pasta Storm e obtive um erro diferente:
+    > ###### Erro 2 `java.lang.RuntimeException: java.io.IOException: Found multiple defaults.yaml resources. You're probably bundling the Storm jars with your topology jar. [jar:file:<Pasta Storm>/lib/storm-core-1.0.2.jar!/defaults.yaml, jar:file:<pasta do projeto>/target/storminho-1.0-jar-with-dependencies.jar!/defaults.yaml]`
+
+1. Mudei o escopo da dependência `org.apache.storm : storm-core` para `provided`
+1. Rodei o [comando 2](#comando-2) e logo em seguida o [comando 3](#comando-3) e **FUNCIONOU!** (Isto é, rodou como estava rodando normalmente na IDE.
+
+# Futuros
+- Quando eu rodei, o nimbus nem o supervisor estava ativos. Acho que eles fecharam sozinhos.
+- Quando eu rodei, a topologia ainda usava o LocalCluster.
