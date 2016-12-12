@@ -36,17 +36,24 @@ supervisor.slots.ports:
 
 ### Para rodar na máquina local
 Seguindo o [Running Topologies on a Production Cluster](http://storm.apache.org/releases/0.10.2/Running-topologies-on-a-production-cluster.html)  
-Primeiro coisa que fiz foi, no Netbeans, procurar a dependência `org.apache.maven.plugins : maven-assembly-plugins` e adicioná-la ao projeto (`3.0.0 [jar] central`).  
+Primeiro coisa que fiz foi, no Netbeans, procurar a
+> ###### Dependência 1 `org.apache.maven.plugins : maven-assembly-plugins`  
+
+e adicioná-la ao projeto (`3.0.0 [jar] central`).  
 Depois:  
 1. Dei um `Build` no projeto no Netbeans
 1. Executei os comandos do item 4 da [Parte do Storm](#parte-do-storm), (Exceto o referente à **UI**) como super usuário pelo terminal e deixei em segundo plano  
-1. Ainda na pasta `Storm`, dei o seguinte comando `sudo bin/storm jar $STORMINHO/target/storminho-1.0.jar edu.uffs.storminho.topologies.MainTopology`
-1. Deu um erro <a name="erro1"></a>`Exception in thread "main" java.lang.NoClassDefFoundError: redis/clients/jedis/Jedis`. Eu já tinha suspeitas que poderia dar esse erro. O problema é que no Build, ele não está incluindo as dependências. Eu tenho que dar um `Build with Dependencies` no Netbeans e usar o `.jar` resultante disso, porém, no tutorial colocado no começo desse capítulo, tem uma linha que diz:
+1. Ainda na pasta `Storm`, dei o seguinte comando
+> ###### Comando 1 `sudo bin/storm jar $STORMINHO/target/storminho-1.0.jar edu.uffs.storminho.topologies.MainTopology`
+1. Deu o seguinte erro:  
+    > ###### Erro 1 `Exception in thread "main" java.lang.NoClassDefFoundError: redis/clients/jedis/Jedis`  
+
+    Eu já tinha suspeitas que poderia dar esse erro. O problema é que no Build, ele não está incluindo as dependências. Eu tenho que dar um `Build with Dependencies` no Netbeans e usar o `.jar` resultante disso. Porém, no tutorial colocado no começo desse capítulo, tem uma linha que diz:
     >Then run mvn assembly:assembly to get an appropriately packaged jar. Make sure you [exclude](http://maven.apache.org/plugins/maven-assembly-plugin/examples/single/including-and-excluding-artifacts.html) the Storm jars since the cluster already has Storm on the classpath.  
 
-    Ou seja, eu preciso criar um `.jar` com todas as dependências necessários, exceto a do Storm.  
-1. Mudei o escopo da dependência `org.apache.storm : storm-core` para `provided` indo em `Adicionar dependência` no Netbeans, procurando esta mesma versão e, na hora de adicionar, mudando o escopo para provided
-1. Dei um `Build with Dependencies` e executei o mesmo comando do passo 3 e deu o mesmo erro. Fiz o mesmo com `Build` e também obtive este resultado
+    Ou seja, eu acho que preciso criar um `.jar` com todas as dependências necessários, exceto a do Storm.  
+1. Mudei o escopo da dependência `org.apache.storm : storm-core` para `provided` indo em `Adicionar dependência` no Netbeans, procurando esta mesma versão e, na hora de adicionar, mudando o escopo para `provided`
+1. Dei um `Build with Dependencies` e executei o [Comando 1](#comando-1). Persistiu o [Erro 1](#erro-1). Fiz o mesmo trocando `Build with Dependencies` por `Build` e também obtive [o erro](#erro-1)
 1. Mudei o escopo do `org.apache.storm : storm-core` para o padrão novamente excluindo a linha `<scope>provided</scope>` em
     ```
 <dependency>
@@ -57,4 +64,4 @@ Depois:
 </dependency>
 ```
     no arquivo `pom.xml` do projeto
-1. Comecei a pesquisar o motivo de estar acontecendo este [este erro](#erro1)
+1. Comecei a pesquisar o motivo de estar acontecendo o [Erro 1](#erro-1)
