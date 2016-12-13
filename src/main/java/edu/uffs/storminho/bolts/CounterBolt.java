@@ -37,7 +37,7 @@ public class CounterBolt extends BaseRichBolt implements IRichBolt {
         String id1 = linha1.split(Variables.SPLIT_CHARS)[Variables.FIELD_ID], id2 = linha2.split(Variables.SPLIT_CHARS)[Variables.FIELD_ID]; //IDs das linhas (rec-XX-org/dup)
 
         //Nesse if só vai entrar o par que ainda não foi processado e que não seja a mesma linha
-        if (set.add(id1 + "_" + id2) && set.add(id2 + "_" + id1) && !id1.equals(id2)) {
+        if (set.add(id1 + "_" + id2) && set.add(id2 + "_" + id1) && !id1.equals(id2) && !(id1.contains("dup") && id2.contains("dup"))) {
             if (SharedMethods.isDuplicata(id1, id2)) {
                 if (respostaArvore) { vp++; }
                 else { fn++; }
