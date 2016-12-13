@@ -5,11 +5,11 @@ public class Variables {
     //Name of the output's file
     public static final String TRAININGSET_OUTPUT_FILE = "trainingSet.arff";
     //Sample Size = Essa porcentagem define quantos pares serão selecionado dentro do conjunto de pares positivos
-    public static final double SAMPLE_SIZE = 0.3;
+    public static double SAMPLE_SIZE = 0.3;
     //Quantas duplicatas existem no conjunto de teste
-    public static final int TOTAL_DUPLICATAS = 6623;
+    public static final int TOTAL_DUPLICATAS = 100;
     //Quantos pares tem ao todo
-    public static final int TOTAL_PARES = 4918000;
+    public static final int TOTAL_PARES = 54000;
     //==========================================================================
 
     /* .csv related ==========================================================*/
@@ -20,7 +20,7 @@ public class Variables {
     //how many columns does the csv have in total
     public final static int ATTRIBUTES_NUMBER = 18;
     //Arquivo que será usado no LineSpout
-    public final static String DATASET_INPUT = "teste03";
+    public final static String DATASET_INPUT = "teste_small_dirty";
     //==========================================================================
 
     /*PairGenerator ==========================================================*/

@@ -70,6 +70,8 @@ public class TrainingCreatorBolt extends BaseRichBolt implements IRichBolt {
                 }
                 lastPP = positivePairs;
                 // if (allPairs % 100000 == 0) jedis.flushAll();
+                positivePairs += SharedMethods.isDuplicata(id1, id2) ? 1:0; //Vai contar quantos desses pares distintos são duplicatas
+                return;
             }
             if (SharedMethods.isDuplicata(id1, id2)) { //Vai contar quantos desses pares distintos são duplicatas
                 positivePairs++;
@@ -84,7 +86,6 @@ public class TrainingCreatorBolt extends BaseRichBolt implements IRichBolt {
             } else {
                 negativeTrainingPairs++; //Quantas não-duplicatas entraram no set de treinamento
             }
-
 
             //salva no arff
             instance.setDataset(dataRaw);

@@ -1,0 +1,2 @@
+#!/bin/bash
+dot -Tpng ForTopology.dot > ForTopology.png; gnome-open ForTopology.png;

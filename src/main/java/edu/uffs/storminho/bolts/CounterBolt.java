@@ -18,6 +18,8 @@ import org.apache.storm.task.OutputCollector;
 import java.util.Map;
 import java.util.TreeSet;
 import org.apache.storm.task.TopologyContext;
+import org.apache.storm.tuple.Fields;
+import org.apache.storm.tuple.Values;
 
 public class CounterBolt extends BaseRichBolt implements IRichBolt {
     OutputCollector _collector;
@@ -54,12 +56,15 @@ public class CounterBolt extends BaseRichBolt implements IRichBolt {
                 System.out.println((vp + vn + fp + fn) / 1000 + " mil pares computados.");
                 System.out.println();
             }
-
+            
+            _collector.emit(new Values(vp, vn, fp, fn));
         }
     }
 
     @Override
-    public void declareOutputFields(OutputFieldsDeclarer declarer) {}
+    public void declareOutputFields(OutputFieldsDeclarer declarer) {
+        declarer.declare(new Fields("VP", "VN", "FP", "FN"));
+    }
 
     @Override
     public void cleanup() {
