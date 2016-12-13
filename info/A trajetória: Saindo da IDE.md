@@ -70,7 +70,7 @@ Depois:
 1. Rodei, na pasta do projeto, o comando
 > ###### Comando 2 `mvn assembly:assembly -DdescriptorId=jar-with-dependencies`
 1. Rodei o
-> ###### Comando 3 `sudo bin/storm jar /home/igorlemos/Desktop/storminho/target/storminho-1.0-jar-with-dependencies.jar edu.uffs.storminho.topologies.MainTopology`  
+> ###### Comando 3 `sudo bin/storm jar $STORMINHO/target/storminho-1.0-jar-with-dependencies.jar edu.uffs.storminho.topologies.MainTopology`  
 
     na pasta Storm e obtive um erro diferente:
     > ###### Erro 2 `java.lang.RuntimeException: java.io.IOException: Found multiple defaults.yaml resources. You're probably bundling the Storm jars with your topology jar. [jar:file:<Pasta Storm>/lib/storm-core-1.0.2.jar!/defaults.yaml, jar:file:<pasta do projeto>/target/storminho-1.0-jar-with-dependencies.jar!/defaults.yaml]`
@@ -78,6 +78,22 @@ Depois:
 1. Mudei o escopo da dependência `org.apache.storm : storm-core` para `provided`
 1. Rodei o [comando 2](#comando-2) e logo em seguida o [comando 3](#comando-3) e **FUNCIONOU!** (Isto é, rodou como estava rodando normalmente na IDE.
 
-# Futuros
+### Futuros
 - Quando eu rodei, o nimbus nem o supervisor estava ativos. Acho que eles fecharam sozinhos.
 - Quando eu rodei, a topologia ainda usava o LocalCluster.
+
+# Dia 13 de Fevereiro de 2016
+#### Recomeçando
+1. Entrei na pasta `Zookeeper/bin` e dei um `sudo ./zkServer.sh start`
+1. Entrei na pasta `Storm/bin` e dei um `sudo ./storm supervisor` e `sudo ./storm nimbus`
+1. Entrei na pasta do projeto e rodei o [comando 2](#comando-2)
+1. Entrei na pasta `Storm` e rodei o [comando 3](#comando-3)
+1. Rodou tranquilo, mas quando eu abri a aba que o `nimbus` e `supervisor` deveriam estar abertos, eles tinham parado de executar.
+1. Dei um `sudo Storm/bin/storm ui`
+1. dei um `sudo Storm/bin/storm nimbus`
+1. dei um `sudo Storm/bin/storm supervisor`
+1. Nada.
+1. Comparei os tempos de executar com os comandos [2](#comando-2) e [3](#comando-3) com o tempo usado quando se executa com a IDE. Usei o cronômetro do celular pra contar quantos pares cada um faziaem 30 segundos e a IDE fez 100 mil a mais.
+
+# Informações adicionais
+- [Tutorial mostrando como configurar Storm em duas máquinas](http://www.allprogrammingtutorials.com/tutorials/setting-up-apache-storm-cluster.php)
