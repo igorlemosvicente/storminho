@@ -1,5 +1,3 @@
-install `gnome-open` and `dot` commands  
-`apt-get install libgnome2-bin; apt-get install graphviz`  
-go to this paste  
-`sudo cmod +x create_image`  
-`./create_image`
+1. Install `dot` commands: `apt-get install graphviz`  
+1. Give required permissions: `sudo cmod +x Create_Images`  
+1. `./Create_Images`

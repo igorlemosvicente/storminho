@@ -60,6 +60,10 @@ public class Variables {
     public static boolean COUNT_MODE;
     //==========================================================================
 
+    /* ResultsPrinterBolt ====================================================*/
+    public static final String FOR_RESULTS_FILE = OUT_PATH + "results.txt";
+    //==========================================================================
+
     //how many fields the weka instances will have
     public static int getFieldsNumber() {
         return (ATTRIBUTES_NUMBER - (FIELD_ID + 1)) * countSim();

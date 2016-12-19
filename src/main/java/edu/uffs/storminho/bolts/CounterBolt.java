@@ -25,11 +25,13 @@ public class CounterBolt extends BaseRichBolt implements IRichBolt {
     OutputCollector _collector;
     long fp, fn, vp, vn;
     TreeSet<String> set;
+    double precisao, revocacao;
 
     @Override
     public void prepare(Map map, TopologyContext context, OutputCollector collector) {
         fp = fn = vp = vn = 0;
         set = new TreeSet<>();
+        _collector = collector;
     }
 
     @Override
@@ -48,22 +50,25 @@ public class CounterBolt extends BaseRichBolt implements IRichBolt {
                 else { vn++; }
             }
 
+            precisao = 1.0 * vp / (vp + fp);
+            revocacao = 1.0 * vp / (vp + fn);
+
             // System.out.println("[c] " + respostaArvore);
             if ((vp + vn + fp + fn) % 1000 == 0) {
                 System.out.println("Falsos Positivos: " + fp + " Falsos Negativos: " + fn);
                 System.out.println("Verdadeiros Positivos: " + vp + " Verdadeiros Negativos: " + vn);
-                System.out.println("Precisão: " + 1.0 * vp / (vp + fp) + " Revocação: " + 1.0 * vp / (vp + fn));
+                System.out.println("Precisão: " + precisao + " Revocação: " + revocacao);
                 System.out.println((vp + vn + fp + fn) / 1000 + " mil pares computados.");
                 System.out.println();
             }
-            
-            _collector.emit(new Values(vp, vn, fp, fn));
+
+            _collector.emit(new Values(precisao, revocacao));
         }
     }
 
     @Override
     public void declareOutputFields(OutputFieldsDeclarer declarer) {
-        declarer.declare(new Fields("VP", "VN", "FP", "FN"));
+        declarer.declare(new Fields("Precisão", "Revocação"));
     }
 
     @Override

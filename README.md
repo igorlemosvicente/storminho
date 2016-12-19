@@ -7,8 +7,12 @@ A integração de dados tem como objetivo facilitar o acesso a informações a p
 O Apache Storm é um sistema de computação distribuído e tolerante a falhas, sendo um software livre, que permite processar dados em tempo real. As soluções do Storm também podem oferecer um processamento de dados garantido, com a capacidade de reproduzir dados que não tenham sido processados com sucesso da primeira vez. O Apache Storm sempre faz com que cada mensagem de entrada seja totalmente processada, mesmo quando a análise de dados é difundida por centenas de nós.
 Para mais informações a respeito da utilização e funcionamento do Storm, clique [aqui](http://storm.apache.org/).
 
-# Fluxograma
+# Topologias
 
-Abaixo, disponibilizamos o fluxograma inicial da topologia atual utilizada no projeto. Por estar em desenvolvimento, alterações podem ser feitas na imagem até a conclusão da pesquisa.
+![aqui](./info/MainTopology.png).
 
-![aqui](./info/img.png).
+![aqui](./info/CountPairsTopology.png).
+
+![aqui](./info/CreateTrainingTopology.png).
+
+![aqui](./info/ForTopology.png).

@@ -3,6 +3,7 @@ package edu.uffs.storminho.topologies;
 import edu.uffs.storminho.bolts.LineSaverBolt;
 import edu.uffs.storminho.LineSpout;
 import edu.uffs.storminho.Variables;
+import edu.uffs.storminho.SharedMethods;
 import edu.uffs.storminho.bolts.CounterBolt;
 import edu.uffs.storminho.bolts.DecisionTreeBolt;
 import edu.uffs.storminho.bolts.PairGeneratorBolt;
@@ -17,7 +18,7 @@ import redis.clients.jedis.Jedis;
 
 public class ForTopology {
     private static final double EPS = 0.0000001;
-    private static final long TIME_TO_SLEEP = 60_000_000_000L; //1_000_000_00 = 1 second
+    private static final long TIME_TO_SLEEP = 5_000L; //1_000 = 1 second
 
     private static TopologyBuilder basicTopologyBuilder() {
         TopologyBuilder builder = new TopologyBuilder();
@@ -41,9 +42,12 @@ public class ForTopology {
         Jedis jedis = new Jedis("localhost");
         Variables.COUNT_MODE = false;
 
+        SharedMethods.forResultsFileInit();
+        SharedMethods.printForResultsFileln("Testes com o arquivo " + Variables.DATASET_INPUT);
+
+
         for (double ss = 0.1; 1 - ss > EPS; ss += 0.1) {
             Variables.SAMPLE_SIZE = ss;
-
             //create trainingSet
             jedis.flushAll();
             TopologyBuilder builderTrain = basicTopologyBuilder();
@@ -53,11 +57,17 @@ public class ForTopology {
             LocalCluster clusterTrain = new LocalCluster();
 
             clusterTrain.submitTopology("creating-trainingset", confTrain, builderTrain.createTopology());
-            System.out.println("Fim do processo da topologia de criação de treinamento");
+            SharedMethods.printStatusln("\nEnd of Training creation step\nGoing to sleep\n");
             Thread.sleep(TIME_TO_SLEEP);
             clusterTrain.shutdown();
 
+            //print status
+
+            SharedMethods.printForResultsFileln("Sample Size: " + ss);
+
             for (int i = 0; i < 10; i++) { //run test 10 times
+                SharedMethods.printForResultsFile("Iteração " + i + ": ");
+
                 TopologyBuilder builderTest = basicTopologyBuilder();
                 jedis.flushAll();
                 builderTest.setBolt("decision-tree", new DecisionTreeBolt(), 1).shuffleGrouping("pair-ranker");
@@ -67,7 +77,10 @@ public class ForTopology {
                 LocalCluster clusterTest = new LocalCluster();
 
                 clusterTest.submitTopology("storminho-topology", confTest, builderTest.createTopology());
-                System.out.println("Fim do processo da topologia de teste");
+
+                //print status
+                SharedMethods.printStatusln("\nEnd of iteration " + i + " of SAMPLE_SIZE " + ss + "\nDormindo agora...\n");
+
                 Thread.sleep(TIME_TO_SLEEP);
                 clusterTest.shutdown();
             }

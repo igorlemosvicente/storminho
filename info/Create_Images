@@ -1,0 +1,6 @@
+#!/bin/bash
+
+for f in *.dot
+do
+    dot $f -Tpng > ${f%.dot*}.png
+done

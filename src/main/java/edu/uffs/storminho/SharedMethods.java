@@ -6,6 +6,7 @@ Methods that can be used by more than one bolt
 package edu.uffs.storminho;
 
 import java.io.PrintStream;
+import java.io.FileWriter;
 import java.util.ArrayList;
 import weka.core.Attribute;
 import weka.core.Instances;
@@ -55,5 +56,34 @@ public class SharedMethods {
         return dataRaw;
     }
 
+    //Initialize the FOR_RESULTS_FILE
+    public static void forResultsFileInit() {
+        try {
+            FileWriter filewrite = new FileWriter(Variables.FOR_RESULTS_FILE);
+            filewrite.close();
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+    }
 
+    //write in FOR_RESULTS_FILE
+    public static boolean printForResultsFile(String s) {
+        FileWriter ps;
+        try {
+            ps = new FileWriter(Variables.FOR_RESULTS_FILE, true); //true to append
+            ps.write(s);
+            ps.close();
+            return true;
+        } catch (Exception e) {
+            System.out.println(e);
+            return false;
+        }
+    }
+
+    public static boolean printForResultsFileln(String s) {
+        return printForResultsFile(s + "\n");
+    }
+
+    public static void printStatus(String s) { System.out.println("\u001B[32m" + s + "\u001B[0m"); }
+    public static void printStatusln(String s) { printStatus(s + "\n"); }
 }
